@@ -1,40 +1,155 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:todo_app_fixed/models/todo.dart';
-import 'package:todo_app_fixed/new_todo.dart';
 
-class TodoItem extends StatelessWidget {
-  const TodoItem(this.myTodo, {super.key, required this.onEditTodo});
+class TodoItem extends StatefulWidget {
+  const TodoItem(this.myTodo, this.deleteTodo, this.updateTodo, {super.key});
 
   final Todo myTodo;
-  final void Function(Todo, String?) onEditTodo;
+  final void Function(String) deleteTodo;
+  final void Function(String, String) updateTodo;
+
+  @override
+  State<TodoItem> createState() => _TodoItemState();
+}
+
+class _TodoItemState extends State<TodoItem> {
+  late TextEditingController _myController;
+
+  final _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+    _myController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _myController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     var currentTime = DateTime.now();
-    return GestureDetector(
-      onTap: () {
-        print('TAPPED');
-        // => NewTodo(onEditTodo: onEditTodo)
-      },
-      child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(13),
-          side: const BorderSide(color: Color.fromARGB(41, 0, 0, 0)),
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(13),
+        side: const BorderSide(color: Color.fromARGB(41, 0, 0, 0)),
+      ),
+      child: ListTile(
+        leading: IconButton(
+          onPressed: () {},
+          icon: const Icon(
+            Icons.check_box_outline_blank,
+            size: 30,
+          ),
         ),
-        child: ListTile(
-          leading: IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.check_box_outline_blank,
-              size: 30,
-            ),
-          ),
-          title: Text(myTodo.title),
-          subtitle: Text(
-            DateFormat.jm().format(currentTime),
-          ),
-          trailing: const Icon(Icons.notifications),
+        title: Text(widget.myTodo.title),
+        subtitle: Text(
+          DateFormat.jm().format(currentTime),
+        ),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(
+                onPressed: () {
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (_) {
+                      return Container(
+                        padding:
+                            const EdgeInsets.only(left: 20, right: 20, top: 15),
+                        child: Column(
+                          children: [
+                            Form(
+                              key: _formKey,
+                              child: TextFormField(
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter a text';
+                                  }
+                                  return null;
+                                },
+                                controller: _myController,
+                                textInputAction: TextInputAction.done,
+                                decoration: InputDecoration(
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.never,
+                                  labelText: 'What do you need to do ?',
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                      width: 3,
+                                      color: Color.fromARGB(200, 130, 128, 255),
+                                    ),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  errorBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                      width: 2,
+                                      color: Colors.red,
+                                    ),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                      width: 3,
+                                      color: Color.fromARGB(200, 130, 128, 255),
+                                    ),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  suffixIcon: IconButton(
+                                    onPressed: () => _myController.clear(),
+                                    icon: const Icon(Icons.close),
+                                  ),
+                                  suffixIconColor:
+                                      const Color.fromARGB(255, 130, 128, 255),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 25),
+                            SizedBox(
+                              width: 100,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  shape: const StadiumBorder(),
+                                  backgroundColor:
+                                      const Color.fromARGB(255, 130, 128, 255),
+                                ),
+                                onPressed: () {
+                                  if (_formKey.currentState!.validate()) {
+                                    widget.updateTodo(
+                                        widget.myTodo.id, _myController.text);
+                                    Navigator.of(context).pop();
+                                    _myController.clear();
+                                  }
+                                },
+                                child: const Text('UPDATE'),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(25),
+                      ),
+                    ),
+                  );
+                },
+                icon: Icon(
+                  Icons.edit,
+                  color: const Color.fromARGB(220, 130, 128, 255),
+                )),
+            IconButton(
+                onPressed: () => widget.deleteTodo(widget.myTodo.id),
+                icon: Icon(
+                  Icons.delete,
+                  color: Theme.of(context).colorScheme.error,
+                )),
+          ],
         ),
       ),
     );

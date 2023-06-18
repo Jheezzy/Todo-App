@@ -7,7 +7,7 @@ class Todo {
   });
 
   final String id;
-  final String title;
+  String title;
   final DateTime date;
   final bool isDone;
 

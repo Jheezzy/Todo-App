@@ -1,30 +1,50 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app_fixed/models/todo.dart';
-import 'package:todo_app_fixed/todo_item.dart';
 
-import 'main_body.dart';
+import 'todo_item.dart';
+import '../models/todo.dart';
 
 class TodoList extends StatelessWidget {
-  const TodoList(this.todos, {super.key, required this.onEditTodo});
+  const TodoList(this.myTodoList, this.deleteTodo, this.updateTodo,
+      {super.key});
 
-  final Todos todos;
-  final void Function(Todo, String?) onEditTodo;
+  final List<Todo> myTodoList;
+  final void Function(String) deleteTodo;
+  final void Function(String, String) updateTodo;
+  // final VoidCallback myId;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SizedBox(
-          height: MediaQuery.of(context).size.height * 0.7,
-          child: ListView.builder(
-            // shrinkWrap: true,
-            // physics: const NeverScrollableScrollPhysics(),
-            itemCount: todos.length,
-            itemBuilder: (_, i) {
-              return TodoItem(todos[i], onEditTodo: onEditTodo);
-            },
-          ),
-        )
+    return SizedBox(
+      height: MediaQuery.of(context).size.height * 0.7,
+      child: myTodoList.isEmpty
+          ? Column(
+              children: [
+                const SizedBox(height: 30),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(50),
+                  child: Image.asset(
+                    'assets/images/4022568.jpg',
+                    height: 300,
+                  ),
+                ),
+                const SizedBox(height: 60),
+                const Text(
+                  'Nothing to do yet !',
+                  style: TextStyle(fontSize: 19),
+                )
+              ],
+            )
+          : ListView.builder(
+              itemCount: myTodoList.length,
+              itemBuilder: (_, i) {
+                return TodoItem(myTodoList[i], deleteTodo, updateTodo);
+              },
+            ),
+    );
+  }
+}
+
+
         // ListView.builder(
         //   shrinkWrap: true,
         //   physics: const NeverScrollableScrollPhysics(),
@@ -33,12 +53,6 @@ class TodoList extends StatelessWidget {
         //     return TodoItem(todos[i].title);
         //   },
         // ),
-      ],
-    );
-  }
-}
-
-
 
 
 

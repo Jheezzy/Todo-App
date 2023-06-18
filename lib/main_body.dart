@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app_fixed/new_todo.dart';
-import 'package:todo_app_fixed/todo_list.dart';
-import 'package:todo_app_fixed/top_container.dart';
 
+import 'new_todo.dart';
+import 'todo_list.dart';
+import 'top_container.dart';
 import 'daterow.dart';
-import 'models/todo.dart';
+import '../models/todo.dart';
 
 typedef Todos = List<Todo>;
 
@@ -16,44 +16,137 @@ class MainBody extends StatefulWidget {
 }
 
 class _MainBodyState extends State<MainBody> {
-  Todos _myTodoList = [
-    // Todo(id: '', title: 'S', date: DateTime.now()),
-    // Todo(id: '', title: 'S', date: DateTime.now()),
-    // Todo(id: '', title: 'S', date: DateTime.now()),
-    // Todo(id: '', title: 'S', date: DateTime.now()),
-    // Todo(id: '', title: 'S', date: DateTime.now()),
-    // Todo(id: '', title: 'S', date: DateTime.now()),
-    // Todo(id: '', title: 'S', date: DateTime.now()),
-    // Todo(id: '', title: 'S', date: DateTime.now()),
-    // Todo(id: '', title: 'S', date: DateTime.now()),
-    // Todo(id: '', title: 'S', date: DateTime.now()),
-    // Todo(id: '', title: 'S', date: DateTime.now()),
-    // Todo(id: '', title: 'S', date: DateTime.now()),
-    // Todo(id: '', title: 'S', date: DateTime.now()),
+  final Todos _myTodoList = [
+    // Tod o(id: '1', title: 'S', date: DateTime.now()),
+    // Tod o(id: '2', title: 'A', date: DateTime.now()),
+    // Tod o(id: '3', title: 'T', date: DateTime.now()),
+    // Tod o(id: '4', title: 'U', date: DateTime.now()),
+    // Tod o(id: '5', title: 'N', date: DateTime.now()),
   ];
 
-  // void _addTodo(Todo todo) {
-  //   setState(() {
-  //     _myTodoList.add(todo);
-  //   });
-  // }
+  void _addTodo(Todo todo) {
+    setState(() {
+      _myTodoList.add(todo);
+    });
+  }
 
-  void _editTodo(Todo todo, String? id) {
-    if (id != null) {
-      _myTodoList = _myTodoList.map((e) {
-        if (e.id == id) {
-          return todo;
-        } else {
-          return e;
-        }
-      }).toList();
-      setState(() {});
-    } else {
+  void _deleteTodo(String id) {
+    setState(() {
+      _myTodoList.removeWhere((todo) => todo.id == id);
+    });
+  }
+
+// The whole concept to edit a todo will be findByIdAndUpdate method, i.e, find a todo by its Id then edit that todo to the new value passed.
+  void _updateTodo(String id, String newTitle) {
+    // var myIdNum = int.parse(id);
+    // if (_myTodoList[myIdNum].id == id) {}
+    var myLocatedTodo = _myTodoList.firstWhere((todo) => todo.id == id);
+
+    if (myLocatedTodo.id == id) {
       setState(() {
-        _myTodoList.add(todo);
+        myLocatedTodo.title = newTitle;
       });
     }
   }
+
+// FOR THE MODAL SHEET
+  // late TextEditingController myController;
+
+  // final formKey = GlobalKey<FormState>();
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   myController = TextEditingController();
+  // }
+
+  // @override
+  // void dispose() {
+  //   myController.dispose();
+  //   super.dispose();
+  // }
+
+  // Widget buildModalSheet(void Function()? onPressed, String buttonText) {
+  //   return IconButton(
+  //     onPressed: () {
+  //       showModalBottomSheet(
+  //         context: context,
+  //         builder: (_) {
+  //           return Container(
+  //             padding: const EdgeInsets.only(left: 20, right: 20, top: 15),
+  //             child: Column(
+  //               children: [
+  //                 Form(
+  //                   key: formKey,
+  //                   child: TextFormField(
+  //                     validator: (value) {
+  //                       if (value == null || value.isEmpty) {
+  //                         return 'Please enter a text';
+  //                       }
+  //                       return null;
+  //                     },
+  //                     controller: myController,
+  //                     textInputAction: TextInputAction.done,
+  //                     decoration: InputDecoration(
+  //                       floatingLabelBehavior: FloatingLabelBehavior.never,
+  //                       labelText: 'What do you need to do ?',
+  //                       enabledBorder: OutlineInputBorder(
+  //                         borderSide: const BorderSide(
+  //                           width: 3,
+  //                           color: Color.fromARGB(200, 130, 128, 255),
+  //                         ),
+  //                         borderRadius: BorderRadius.circular(10),
+  //                       ),
+  //                       errorBorder: OutlineInputBorder(
+  //                         borderSide: const BorderSide(
+  //                           width: 2,
+  //                           color: Colors.red,
+  //                         ),
+  //                         borderRadius: BorderRadius.circular(10),
+  //                       ),
+  //                       focusedBorder: OutlineInputBorder(
+  //                         borderSide: const BorderSide(
+  //                           width: 3,
+  //                           color: Color.fromARGB(200, 130, 128, 255),
+  //                         ),
+  //                         borderRadius: BorderRadius.circular(10),
+  //                       ),
+  //                       suffixIcon: IconButton(
+  //                         onPressed: () => myController.clear(),
+  //                         icon: const Icon(Icons.close),
+  //                       ),
+  //                       suffixIconColor:
+  //                           const Color.fromARGB(255, 130, 128, 255),
+  //                     ),
+  //                   ),
+  //                 ),
+  //                 const SizedBox(height: 25),
+  //                 SizedBox(
+  //                   width: 100,
+  //                   child: ElevatedButton(
+  //                     style: ElevatedButton.styleFrom(
+  //                       shape: const StadiumBorder(),
+  //                       backgroundColor:
+  //                           const Color.fromARGB(255, 130, 128, 255),
+  //                     ),
+  //                     onPressed: onPressed,
+  //                     child: Text(buttonText),
+  //                   ),
+  //                 ),
+  //               ],
+  //             ),
+  //           );
+  //         },
+  //         shape: const RoundedRectangleBorder(
+  //           borderRadius: BorderRadius.vertical(
+  //             top: Radius.circular(25),
+  //           ),
+  //         ),
+  //       );
+  //     },
+  //     icon: const Icon(Icons.add),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -61,46 +154,22 @@ class _MainBodyState extends State<MainBody> {
       color: Theme.of(context).scaffoldBackgroundColor,
       child: SafeArea(
         child: Scaffold(
-          body: Column(
-            children: [
-              const TopContainer(),
-              const DateRow(),
-              TodoList(_myTodoList, onEditTodo: _editTodo),
-              // NewTodo(onEditTodo: _addTodo),
-            ],
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+                const TopContainer(),
+                const DateRow(),
+                TodoList(_myTodoList, _deleteTodo, _updateTodo),
+                // NewTodo(onEditTodo: _addTodo),
+              ],
+            ),
           ),
-          bottomSheet: NewTodo(
-            onEditTodo: _editTodo,
-          ),
+          bottomSheet: NewTodo(_addTodo),
         ),
       ),
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //* BEFORE SPLITTING INTO WIDGETS
 // class MainBody extends StatelessWidget {
@@ -228,54 +297,6 @@ class _MainBodyState extends State<MainBody> {
 //     );
 //   }
 // }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // List get listOfDays {
 //   return List.generate(
