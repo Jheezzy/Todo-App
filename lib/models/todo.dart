@@ -9,7 +9,7 @@ class Todo {
   final String id;
   String title;
   final DateTime date;
-  final bool isDone;
+  bool isDone;
 
   Todo copyWith({
     String? id,

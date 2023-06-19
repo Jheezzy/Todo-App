@@ -30,23 +30,39 @@ class _TodoItemState extends State<TodoItem> {
     super.dispose();
   }
 
+  void changeTodo(Todo myTodo) {
+    setState(() {
+      myTodo.isDone = !myTodo.isDone;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     var currentTime = DateTime.now();
+
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(13),
         side: const BorderSide(color: Color.fromARGB(41, 0, 0, 0)),
       ),
       child: ListTile(
-        leading: IconButton(
-          onPressed: () {},
-          icon: const Icon(
-            Icons.check_box_outline_blank,
+        onTap: () => changeTodo(widget.myTodo),
+        leading: Padding(
+          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+          child: Icon(
+            widget.myTodo.isDone
+                ? Icons.check_box
+                : Icons.check_box_outline_blank,
             size: 30,
+            color: Color.fromARGB(220, 130, 128, 255),
           ),
         ),
-        title: Text(widget.myTodo.title),
+        title: Text(
+          widget.myTodo.title,
+          style: TextStyle(
+              decoration:
+                  widget.myTodo.isDone ? TextDecoration.lineThrough : null),
+        ),
         subtitle: Text(
           DateFormat.jm().format(currentTime),
         ),
@@ -139,9 +155,9 @@ class _TodoItemState extends State<TodoItem> {
                     ),
                   );
                 },
-                icon: Icon(
+                icon: const Icon(
                   Icons.edit,
-                  color: const Color.fromARGB(220, 130, 128, 255),
+                  color: Color.fromARGB(220, 130, 128, 255),
                 )),
             IconButton(
                 onPressed: () => widget.deleteTodo(widget.myTodo.id),
@@ -155,6 +171,54 @@ class _TodoItemState extends State<TodoItem> {
     );
   }
 }
+
+
+//* What I want is that I want the time it shows should be the time I added the todo, 
+//* Right now it is showing the current time 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 //*

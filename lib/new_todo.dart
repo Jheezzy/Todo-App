@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../models/todo.dart';
 
 class NewTodo extends StatefulWidget {
-  NewTodo(this.addTodo, {super.key});
+  const NewTodo(this.addTodo, {super.key});
 
   // final ValueChanged<Todo> addTodod;
 
@@ -59,6 +59,7 @@ class _NewTodoState extends State<NewTodo> {
               context: context,
               builder: (_) {
                 return Container(
+                  height: 220,
                   padding: const EdgeInsets.only(left: 20, right: 20, top: 15),
                   child: Column(
                     children: [
