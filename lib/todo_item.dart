@@ -48,13 +48,13 @@ class _TodoItemState extends State<TodoItem> {
       child: ListTile(
         onTap: () => changeTodo(widget.myTodo),
         leading: Padding(
-          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
           child: Icon(
             widget.myTodo.isDone
                 ? Icons.check_box
                 : Icons.check_box_outline_blank,
             size: 30,
-            color: Color.fromARGB(220, 130, 128, 255),
+            color: const Color.fromARGB(220, 130, 128, 255),
           ),
         ),
         title: Text(
