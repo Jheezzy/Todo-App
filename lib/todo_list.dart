@@ -37,7 +37,12 @@ class TodoList extends StatelessWidget {
           : ListView.builder(
               itemCount: myTodoList.length,
               itemBuilder: (_, i) {
-                return TodoItem(myTodoList[i], deleteTodo, updateTodo);
+                // return TodoItem(myTodoList[i], deleteTodo, updateTodo, key: ValueKey(),);
+                return TodoItem(
+                    // key: ValueKey(myTodoList[i].date),
+                    myTodo: myTodoList[i],
+                    deleteTodo: deleteTodo,
+                    updateTodo: updateTodo);
               },
             ),
     );
