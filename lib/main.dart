@@ -12,7 +12,8 @@ class TodoApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(fontFamily: 'PlusJakartaSans'),
-      home: MainBody(),
+      home: const MainBody(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }

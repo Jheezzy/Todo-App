@@ -39,20 +39,6 @@ class _NewTodoState extends State<NewTodo> {
           'Add a new To-do',
           style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
         ),
-        // BuildModalSheet(
-        //   onPressed: () {
-        // if (_formKey.currentState!.validate()) {
-        //   widget.addTodo(Todo(
-        //     id: DateTime.now().toIso8601String(),
-        //     title: _myController.text,
-        //     date: DateTime.now(),
-        //   ));
-        //   Navigator.of(context).pop();
-        //   _myController.clear();
-        //     }
-        //   },
-        //   buttonText: 'ADD THIS SHIT',
-        // ),
         IconButton(
           onPressed: () {
             showModalBottomSheet(
@@ -150,7 +136,7 @@ class _NewTodoState extends State<NewTodo> {
             );
           },
           icon: const Icon(Icons.add),
-        )
+        ),
       ],
     );
   }
