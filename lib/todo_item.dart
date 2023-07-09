@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:todo_app_fixed/models/todo.dart';
-import 'package:todo_app_fixed/new_todo.dart';
+// import 'package:todo_app_fixed/new_todo.dart';
 
 class TodoItem extends StatelessWidget {
   const TodoItem(this.myTodo, {super.key, required this.onEditTodo});
