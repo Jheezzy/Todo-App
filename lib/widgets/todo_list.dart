@@ -3,15 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo_app_fixed/providers/todo_list_provider.dart';
 
 import 'todo_item.dart';
-import '../../models/todo.dart';
 
 class TodoList extends ConsumerWidget {
   const TodoList({super.key});
-
-  // final List<Todo> myTodoList;
-  // final void Function(String) deleteTodo;
-  // final void Function(String, String) updateTodo;
-  // final VoidCallback myId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
