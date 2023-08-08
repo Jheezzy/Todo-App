@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:todo_app_fixed/providers/todo_list_provider.dart';
 
-import '../models/todo.dart';
+import '../../models/todo.dart';
 
-class NewTodo extends StatefulWidget {
-  const NewTodo(this.addTodo, {super.key});
+class NewTodo extends ConsumerStatefulWidget {
+  const NewTodo({super.key});
 
   // final ValueChanged<Todo> addTodod;
 
-  final void Function(Todo) addTodo;
+  // final void Function(Todo) addTodo;
 
   @override
-  State<NewTodo> createState() => _NewTodoState();
+  ConsumerState<NewTodo> createState() => _NewTodoState();
 }
 
-class _NewTodoState extends State<NewTodo> {
+class _NewTodoState extends ConsumerState<NewTodo> {
   late TextEditingController _myController;
 
   final _formKey = GlobalKey<FormState>();
@@ -111,14 +113,25 @@ class _NewTodoState extends State<NewTodo> {
                             ),
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
-                                widget.addTodo(Todo(
-                                  id: DateTime.now().toIso8601String(),
-                                  title: _myController.text,
-                                  date: DateTime.now(),
-                                ));
+                                ref.read(todoListProvider.notifier).addTodo(
+                                      Todo(
+                                        id: DateTime.now().toIso8601String(),
+                                        title: _myController.text,
+                                        date: DateTime.now(),
+                                      ),
+                                    );
                                 Navigator.of(context).pop();
                                 _myController.clear();
                               }
+                              // if (_formKey.currentState!.validate()) {
+                              //   widget.addTodo(Todo(
+                              //     id: DateTime.now().toIso8601String(),
+                              //     title: _myController.text,
+                              //     date: DateTime.now(),
+                              //   ));
+                              //   Navigator.of(context).pop();
+                              //   _myController.clear();
+                              // }
                             },
                             child: const Text('ADD'),
                           ),

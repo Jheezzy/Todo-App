@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'new_todo.dart';
-import 'todo_list.dart';
-import 'top_container.dart';
-import 'daterow.dart';
+import 'widgets/new_todo.dart';
+import 'widgets/todo_list.dart';
+import 'widgets/top_container.dart';
+import 'widgets/daterow.dart';
 import '../models/todo.dart';
 
 typedef Todos = List<Todo>;
@@ -16,38 +16,30 @@ class MainBody extends StatefulWidget {
 }
 
 class _MainBodyState extends State<MainBody> {
-  final Todos _myTodoList = [
-    // Tod o(id: '1', title: 'S', date: DateTime.now()),
-    // Tod o(id: '2', title: 'A', date: DateTime.now()),
-    // Tod o(id: '3', title: 'T', date: DateTime.now()),
-    // Tod o(id: '4', title: 'U', date: DateTime.now()),
-    // Tod o(id: '5', title: 'N', date: DateTime.now()),
-  ];
+  // void _addTodo(Todo todo) {
+  //   setState(() {
+  //     _myTodoList.add(todo);
+  //   });
+  // }
 
-  void _addTodo(Todo todo) {
-    setState(() {
-      _myTodoList.add(todo);
-    });
-  }
-
-  void _deleteTodo(String id) {
-    setState(() {
-      _myTodoList.removeWhere((todo) => todo.id == id);
-    });
-  }
+  // void _deleteTodo(String id) {
+  //   setState(() {
+  //     _myTodoList.removeWhere((todo) => todo.id == id);
+  //   });
+  // }
 
 // The whole concept to edit a todo will be findByIdAndUpdate method, i.e, find a todo by its Id then edit that todo to the new value passed.
-  void _updateTodo(String id, String newTitle) {
-    // var myIdNum = int.parse(id);
-    // if (_myTodoList[myIdNum].id == id) {}
-    var myLocatedTodo = _myTodoList.firstWhere((todo) => todo.id == id);
+  // void _updateTodo(String id, String newTitle) {
+  //   // var myIdNum = int.parse(id);
+  //   // if (_myTodoList[myIdNum].id == id) {}
+  //   var myLocatedTodo = _myTodoList.firstWhere((todo) => todo.id == id);
 
-    if (myLocatedTodo.id == id) {
-      setState(() {
-        myLocatedTodo.title = newTitle;
-      });
-    }
-  }
+  //   if (myLocatedTodo.id == id) {
+  //     setState(() {
+  //       myLocatedTodo.title = newTitle;
+  //     });
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -60,12 +52,12 @@ class _MainBodyState extends State<MainBody> {
               children: [
                 const TopContainer(),
                 const DateRow(),
-                TodoList(_myTodoList, _deleteTodo, _updateTodo),
+                TodoList(),
                 // NewTodo(onEditTodo: _addTodo),
               ],
             ),
           ),
-          bottomSheet: NewTodo(_addTodo),
+          bottomSheet: NewTodo(),
         ),
       ),
     );

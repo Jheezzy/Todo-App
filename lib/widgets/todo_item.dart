@@ -1,25 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:todo_app_fixed/models/todo.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:todo_app_fixed/providers/todo_list_provider.dart';
 
-class TodoItem extends StatefulWidget {
+class TodoItem extends ConsumerStatefulWidget {
   const TodoItem({
     super.key,
     required this.myTodo,
-    required this.deleteTodo,
-    required this.updateTodo,
+    // required this.deleteTodo,
+    // required this.updateTodo,
   });
 
   final Todo myTodo;
-  final void Function(String) deleteTodo;
-  final void Function(String, String) updateTodo;
+  // final void Function(String) deleteTodo;
+  // final void Function(String, String) updateTodo;
 
   @override
-  State<TodoItem> createState() => _TodoItemState();
+  ConsumerState<TodoItem> createState() => _TodoItemState();
 }
 
-class _TodoItemState extends State<TodoItem> {
+class _TodoItemState extends ConsumerState<TodoItem> {
   late TextEditingController _myController;
   // late TextEditingController _dateController;
 
@@ -45,6 +47,7 @@ class _TodoItemState extends State<TodoItem> {
 
   @override
   Widget build(BuildContext context) {
+    var tdList = ref.watch(todoListProvider);
     var currentTime = DateTime.now();
 
     return Card(
@@ -56,9 +59,10 @@ class _TodoItemState extends State<TodoItem> {
         key: UniqueKey(),
         endActionPane: ActionPane(
           motion: const StretchMotion(),
-          dismissible: DismissiblePane(
-            onDismissed: () => widget.deleteTodo(widget.myTodo.id),
-          ),
+          dismissible: DismissiblePane(onDismissed: () {
+            // var index = tdList.indexOf(widget.myTodo);
+            ref.read(todoListProvider.notifier).deleteTodo(widget.myTodo.id);
+          }),
           children: [
             SlidableAction(
               onPressed: (_) {
@@ -129,10 +133,11 @@ class _TodoItemState extends State<TodoItem> {
                                 // var finalText = _myController.text +
 
                                 if (_formKey.currentState!.validate()) {
-                                  widget.updateTodo(
-                                      widget.myTodo.id, _myController.text);
-                                  Navigator.of(context).pop();
-                                  _myController.clear();
+                                  // ref.read(todoListProvider.notifier).updateTodo(widget.myTodo.id, newTitle)
+                                  // widget.updateTodo(
+                                  //     widget.myTodo.id, _myController.text);
+                                  // Navigator.of(context).pop();1
+                                  // _myController.clear();
                                 }
                               },
                               child: const Text('UPDATE'),
@@ -153,7 +158,18 @@ class _TodoItemState extends State<TodoItem> {
               backgroundColor: const Color.fromARGB(220, 130, 128, 255),
             ),
             SlidableAction(
-              onPressed: (_) => widget.deleteTodo(widget.myTodo.id),
+              // onPressed: (_) =>
+              // ref
+              //     .read(todoListProvider.notifier)
+              //     .deleteTodo(widget.myTodo.id),
+              // icon: Icons.delete,
+              // backgroundColor: Theme.of(context).colorScheme.error,
+              onPressed: (_) {
+                // var index = tdList.indexOf(widget.myTodo);
+                ref
+                    .read(todoListProvider.notifier)
+                    .deleteTodo(widget.myTodo.id);
+              },
               icon: Icons.delete,
               backgroundColor: Theme.of(context).colorScheme.error,
             )

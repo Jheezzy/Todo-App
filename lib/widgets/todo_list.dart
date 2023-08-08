@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:todo_app_fixed/providers/todo_list_provider.dart';
 
 import 'todo_item.dart';
-import '../models/todo.dart';
+import '../../models/todo.dart';
 
-class TodoList extends StatelessWidget {
-  const TodoList(this.myTodoList, this.deleteTodo, this.updateTodo,
-      {super.key});
+class TodoList extends ConsumerWidget {
+  const TodoList({super.key});
 
-  final List<Todo> myTodoList;
-  final void Function(String) deleteTodo;
-  final void Function(String, String) updateTodo;
+  // final List<Todo> myTodoList;
+  // final void Function(String) deleteTodo;
+  // final void Function(String, String) updateTodo;
   // final VoidCallback myId;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    var myTodoList = ref.watch(todoListProvider);
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.7,
       child: myTodoList.isEmpty
@@ -40,10 +42,11 @@ class TodoList extends StatelessWidget {
                 // return TodoItem(myTodoList[i], deleteTodo, updateTodo, key: ValueKey(),);
 
                 return TodoItem(
-                    // key: ValueKey(myTodoList[i].date),
-                    myTodo: myTodoList[i],
-                    deleteTodo: deleteTodo,
-                    updateTodo: updateTodo);
+                  // key: ValueKey(myTodoList[i].date),
+                  myTodo: myTodoList[i],
+
+                  // updateTodo: updateTodo,
+                );
               },
             ),
     );
