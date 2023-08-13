@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:todo_app_fixed/models/cache_model/todo_isar.dart';
 import 'package:todo_app_fixed/providers/todo_list_provider.dart';
 
 import '../../models/todo.dart';
+import '../services/isar_service.dart';
 
 class NewTodo extends ConsumerStatefulWidget {
   const NewTodo({super.key});
@@ -16,6 +18,8 @@ class NewTodo extends ConsumerStatefulWidget {
 }
 
 class _NewTodoState extends ConsumerState<NewTodo> {
+// creating an instance of the IsarService class
+
   late TextEditingController _myController;
 
   final _formKey = GlobalKey<FormState>();
@@ -34,6 +38,7 @@ class _NewTodoState extends ConsumerState<NewTodo> {
 
   @override
   Widget build(BuildContext context) {
+    final isarService = ref.watch(isarServiceProvider);
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -113,13 +118,18 @@ class _NewTodoState extends ConsumerState<NewTodo> {
                             ),
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
-                                ref.read(todoListProvider.notifier).addTodo(
-                                      Todo(
+                                var submittedData = _myController.text;
+                                // for state management & adding a todo to isarDB
+                                ref
+                                    .read(isarServiceProvider.notifier)
+                                    .createTodo(
+                                      TodoIsar(
                                         id: DateTime.now().toIso8601String(),
-                                        title: _myController.text,
+                                        title: submittedData,
                                         date: DateTime.now(),
                                       ),
                                     );
+
                                 Navigator.of(context).pop();
                                 _myController.clear();
                               }
@@ -150,6 +160,13 @@ class _NewTodoState extends ConsumerState<NewTodo> {
           },
           icon: const Icon(Icons.add),
         ),
+        // ElevatedButton(
+        //   onPressed: () async {
+        //     var results = await isarService.getTodos();
+        //     print(results.map((todo) => todo.title));
+        //   },
+        //   child: const Text('Get All Todos'),
+        // ),
       ],
     );
   }

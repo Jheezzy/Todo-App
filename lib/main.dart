@@ -23,4 +23,6 @@ class TodoApp extends StatelessWidget {
   }
 }
 
-//* Modified-3 branch (state management applied)
+//* Modified-3 branch
+//* - state management implemented
+//* - isar database implemented

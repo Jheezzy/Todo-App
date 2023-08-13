@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:todo_app_fixed/models/cache_model/todo_isar.dart';
 import 'package:todo_app_fixed/models/todo.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:todo_app_fixed/providers/todo_list_provider.dart';
+
+import '../services/isar_service.dart';
 
 class TodoItem extends ConsumerStatefulWidget {
   const TodoItem({
@@ -56,7 +59,7 @@ class _TodoItemState extends ConsumerState<TodoItem> {
           motion: const StretchMotion(),
           dismissible: DismissiblePane(onDismissed: () {
             // var index = tdList.indexOf(widget.myTodo);
-            ref.read(todoListProvider.notifier).deleteTodo(widget.myTodo.id);
+            ref.read(isarServiceProvider.notifier).deleteTodo(widget.myTodo.id);
           }),
           children: [
             SlidableAction(
@@ -129,9 +132,16 @@ class _TodoItemState extends ConsumerState<TodoItem> {
 
                                 if (_formKey.currentState!.validate()) {
                                   ref
-                                      .read(todoListProvider.notifier)
-                                      .updateTodo(
-                                          widget.myTodo.id, _myController.text);
+                                      .read(isarServiceProvider.notifier)
+                                      .updateTodos(
+                                        widget.myTodo.id,
+                                        _myController.text,
+                                      );
+
+                                  // ref
+                                  //     .read(todoListProvider.notifier)
+                                  //     .updateTodo(
+                                  //         widget.myTodo.id, _myController.text);
                                   Navigator.of(context).pop();
                                   _myController.clear();
                                   // widget.updateTodo(
@@ -159,7 +169,7 @@ class _TodoItemState extends ConsumerState<TodoItem> {
               onPressed: (_) {
                 // var index = tdList.indexOf(widget.myTodo);
                 ref
-                    .read(todoListProvider.notifier)
+                    .read(isarServiceProvider.notifier)
                     .deleteTodo(widget.myTodo.id);
               },
               icon: Icons.delete,

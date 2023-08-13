@@ -1,5 +1,4 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import '../models/todo.dart';
 
 class TodoListNotifier extends StateNotifier<List<Todo>> {
@@ -21,7 +20,7 @@ class TodoListNotifier extends StateNotifier<List<Todo>> {
     state = [...state];
   }
 
-  void addTodo(Todo todo) {
+  void addTodo(Todo todo) async {
     state = [...state, todo];
   }
 }
@@ -33,4 +32,23 @@ final todoListProvider = StateNotifierProvider<TodoListNotifier, List<Todo>>(
 //* I want to delete a todo
 //* I have to change state in an immutable way
 
+// class IsarService {
+//   late Future<Isar> db;
 
+//   IsarService() {
+//     db = openIsar();
+//   }
+
+//   Future<Isar> openIsar() async {
+//     if (Isar.instanceNames.isEmpty) {
+//       final dir = await getApplicationCacheDirectory();
+//       return await Isar.open([TodoIsarSchema], directory: dir.path);
+//     }
+//     return Future.value(Isar.getInstance());
+//   }
+
+//   Future<void> createTodo(TodoIsar todo) async {
+//     final isar = await db;
+//     isar.writeTxnSync(() => isar.todoIsars.putSync());
+//   }
+// }

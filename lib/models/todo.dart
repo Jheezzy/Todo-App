@@ -1,3 +1,5 @@
+import 'package:todo_app_fixed/models/cache_model/todo_isar.dart';
+
 class Todo {
   Todo({
     required this.id,
@@ -23,6 +25,11 @@ class Todo {
       date: date ?? this.date,
       isDone: isDone ?? this.isDone,
     );
+  }
+
+// to create a todo with todoIsar values
+  factory Todo.fromTodoIsar(TodoIsar todo) {
+    return Todo(id: todo.id, title: todo.title, date: todo.date);
   }
 
   @override

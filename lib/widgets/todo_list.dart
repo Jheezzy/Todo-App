@@ -1,19 +1,53 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:todo_app_fixed/providers/todo_list_provider.dart';
+import 'package:todo_app_fixed/services/isar_service.dart';
 
 import 'todo_item.dart';
 
-class TodoList extends ConsumerWidget {
+class TodoList extends ConsumerStatefulWidget {
   const TodoList({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    var myTodoList = ref.watch(todoListProvider);
+  ConsumerState<ConsumerStatefulWidget> createState() => _TodoListState();
+}
+
+class _TodoListState extends ConsumerState<TodoList> {
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   // to allow any async operation inside initState
+  //   WidgetsBinding.instance.addPostFrameCallback((_) async {
+  //   // immediatedly we are in this page fetch the list<todos>
+  //     await ref.read(isarServiceProvider.notifier).getTodos();
+  //   });
+  // }
+
+  @override
+  Widget build(BuildContext context) {
+    // final myTodoList = ref.watch(todoListProvider);
+    final isarService = ref.watch(isarServiceProvider);
+
+    // To listen for state changes in your state notifier
+    // ref.listen<AsyncValue>(isarServiceProvider, (_, state) {
+    //   if (!state.isLoading && !state.isRefreshing && state.hasError) {
+    //     ScaffoldMessenger.of(context).showSnackBar(
+    //       SnackBar(
+    //         content: Text('${state.error}'),
+    //       ),
+    //     );
+    //   }
+    // });
+
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.7,
-      child: myTodoList.isEmpty
-          ? Column(
+      child: isarService.when(
+        loading: () => const Center(
+            child: SizedBox(
+                height: 20, width: 20, child: CircularProgressIndicator())),
+        error: (e, _) => Center(child: Text('$e')),
+        data: (todos) {
+          if (todos.isEmpty) {
+            return Column(
               children: [
                 const SizedBox(height: 30),
                 ClipRRect(
@@ -29,20 +63,23 @@ class TodoList extends ConsumerWidget {
                   style: TextStyle(fontSize: 19),
                 )
               ],
-            )
-          : ListView.builder(
-              itemCount: myTodoList.length,
-              itemBuilder: (_, i) {
-                // return TodoItem(myTodoList[i], deleteTodo, updateTodo, key: ValueKey(),);
+            );
+          }
+          return ListView.builder(
+            itemCount: todos.length,
+            itemBuilder: (_, i) {
+              // return TodoItem(myTodoList[i], deleteTodo, updateTodo, key: ValueKey(),);
 
-                return TodoItem(
-                  // key: ValueKey(myTodoList[i].date),
-                  myTodo: myTodoList[i],
+              return TodoItem(
+                // key: ValueKey(myTodoList[i].date),
+                myTodo: todos[i],
 
-                  // updateTodo: updateTodo,
-                );
-              },
-            ),
+                // updateTodo: updateTodo,
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }
