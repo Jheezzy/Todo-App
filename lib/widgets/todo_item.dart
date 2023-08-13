@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:todo_app_fixed/models/cache_model/todo_isar.dart';
 import 'package:todo_app_fixed/models/todo.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:todo_app_fixed/providers/todo_list_provider.dart';
 
 import '../services/isar_service.dart';
 

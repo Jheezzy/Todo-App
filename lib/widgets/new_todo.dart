@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo_app_fixed/models/cache_model/todo_isar.dart';
-import 'package:todo_app_fixed/providers/todo_list_provider.dart';
 
-import '../../models/todo.dart';
 import '../services/isar_service.dart';
 
 class NewTodo extends ConsumerStatefulWidget {
@@ -38,7 +36,6 @@ class _NewTodoState extends ConsumerState<NewTodo> {
 
   @override
   Widget build(BuildContext context) {
-    final isarService = ref.watch(isarServiceProvider);
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
